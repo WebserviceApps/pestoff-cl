@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pestoff | Control de Plagas para Empresas en Santiago y Región Metropolitana</title>
+    <meta name="description" content="Pestoff ofrece servicios B2B de control de plagas en Santiago y la Región Metropolitana. Soluciones profesionales para empresas y locales comerciales.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="assets/logo-pestoff1.png" type="image/png">
+
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        html { scroll-behavior: smooth; }
+
+        /* Colores personalizados */
+        .bg-pestoff-dark { background-color: #2c3e50; }
+        .bg-pestoff-teal { background-color: #00a99d; }
+        .text-pestoff-dark { color: #2c3e50; }
+        .hover\:bg-pestoff-teal-dark:hover { background-color: #008a7e; }
+        .ring-pestoff-teal:focus { ring-color: #00a99d; }
+
+        /* Nuevos colores del PDF */
+        .bg-pestoff-footer { background-color: #153545; }
+        .text-pestoff-footer-link { color: #81dfd7; }
+        .bg-form-section { background-color: #a3e2e0; }
+
+        /* Estilos para tarjetas de servicios */
+        .bg-service-card { background-color: #f3f8f8; }
+        .hover\:bg-service-card-hover:hover { background-color: #d0eae9; }
+        .text-service-card { color: #2a424d; }
+        
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #278d46;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div>
+                <a href="#">
+                    <img src="assets/logo-pestoff1.png" alt="Logo de Pestoff Chile" class="h-12 md:h-14">
+                </a>
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#inicio" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Inicio</a>
+                <a href="#servicios" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Servicios</a>
+                <a href="#pestoff" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Pestoff</a>
+                <a href="blog.html" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Blog</a>
+            </div>
+            <div class="flex items-center">
+                 <a href="#contacto" class="bg-pestoff-teal text-white font-semibold px-6 py-2 rounded-full hover:bg-pestoff-teal-dark transition duration-300 shadow-sm">
+                    Cotizar Ahora
+                </a>
+                <button id="mobile-menu-button" class="md:hidden ml-4 text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white">
+            <a href="#inicio" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Inicio</a>
+            <a href="#servicios" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Servicios</a>
+            <a href="#pestoff" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Pestoff</a>
+            <a href="blog.html" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Blog</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="inicio" class="relative bg-pestoff-dark text-white h-[70vh] md:h-[80vh] flex items-center">
+            <div class="absolute inset-0">
+                <img src="assets/van-hero.jpg" alt="Van de Pestoff" class="w-full h-full object-cover opacity-40">
+            </div>
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="max-w-2xl">
+                    <h1 class="text-4xl md:text-6xl font-bold leading-tight">Soluciones Definitivas Contra Plagas para Empresas</h1>
+                    <p class="mt-4 text-lg md:text-xl text-gray-200">Protegemos tu negocio en Santiago y la Región Metropolitana con tratamientos B2B eficaces, seguros y personalizados.</p>
+                    <a href="#servicios" class="mt-8 inline-block bg-pestoff-teal text-white font-bold px-8 py-4 rounded-full hover:bg-pestoff-teal-dark transition duration-300 shadow-lg">
+                        Ver Nuestros Servicios
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="servicios" class="py-12 md:py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-pestoff-dark">Nuestros Servicios</h2>
+                    <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Soluciones integrales para el manejo y control de plagas en entornos comerciales, industriales y residenciales.</p>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                    <!-- Service Cards Updated with <img> tags -->
+                    <a href="servicio-control-palomas.html" class="bg-service-card p-4 rounded-xl shadow-md hover:bg-service-card-hover transition-all duration-300 text-center flex flex-col items-center justify-center aspect-square">
+                        <img src="assets/01.svg" alt="Icono Control de palomas" class="w-12 h-12 mb-3">
+                        <h3 class="text-base font-semibold text-service-card leading-tight">Control de palomas</h3>
+                    </a>
+                    <!-- ESTA ES LA VERSIÓN CORRECTA -->
+<a href="servicio-desinfeccion.html" class="bg-service-card p-4 rounded-xl shadow-md hover:bg-service-card-hover transition-all duration-300 text-center flex flex-col items-center justify-center aspect-square">
+    <img src="assets/02.svg" alt="Icono Desinfección" class="w-12 h-12 mb-3">
+    <h3 class="text-base font-semibold text-service-card">Desinfección</h3>
+</a>
+                    <div class="bg-service-card p-4 rounded-xl shadow-md hover:bg-service-card-hover transition-all duration-300 text-center flex flex-col items-center justify-center aspect-square">
+                        <img src="assets/03.svg" alt="Icono Fumigación" class="w-12 h-12 mb-3">
+                        <h3 class="text-base font-semibold text-service-card">Fumigación</h3>
+                    </div>
+                    <div class="bg-service-card p-4 rounded-xl shadow-md hover:bg-service-card-hover transition-all duration-300 text-center flex flex-col items-center justify-center aspect-square">
+                        <img src="assets/04.svg" alt="Icono Gestión integral de plagas" class="w-12 h-12 mb-3">
+                        <h3 class="text-base font-semibold text-service-card leading-tight">Gestión integral de plagas</h3>
+                    </div>
+                    <div class="bg-service-card p-4 rounded-xl shadow-md hover:bg-service-card-hover transition-all duration-300 text-center flex flex-col items-center justify-center aspect-square">
+                        <img src="assets/05.svg" alt="Icono Insectocaptores" class="w-12 h-12 mb-3">
+                        <h3 class="text-base font-semibold text-service-card">Insectocaptores</h3>
+                    </div>
+                    <div class="bg-service-card p-4 rounded-xl shadow-md hover:bg-service-card-hover transition-all duration-300 text-center flex flex-col items-center justify-center aspect-square">
+                        <img src="assets/06.svg" alt="Icono Plaga de aves" class="w-12 h-12 mb-3">
+                        <h3 class="text-base font-semibold text-service-card">Plaga de aves</h3>
+                    </div>
+                    <div class="bg-service-card p-4 rounded-xl shadow-md hover:bg-service-card-hover transition-all duration-300 text-center flex flex-col items-center justify-center aspect-square">
+                        <img src="assets/07.svg" alt="Icono Plaga de insectos" class="w-12 h-12 mb-3">
+                        <h3 class="text-base font-semibold text-service-card">Plaga de insectos</h3>
+                    </div>
+                     <div class="bg-service-card p-4 rounded-xl shadow-md hover:bg-service-card-hover transition-all duration-300 text-center flex flex-col items-center justify-center aspect-square">
+                        <img src="assets/08.svg" alt="Icono Plaga de roedores" class="w-12 h-12 mb-3">
+                        <h3 class="text-base font-semibold text-service-card">Plaga de roedores</h3>
+                    </div>
+                     <div class="bg-service-card p-4 rounded-xl shadow-md hover:bg-service-card-hover transition-all duration-300 text-center flex flex-col items-center justify-center aspect-square">
+                        <img src="assets/09.svg" alt="Icono Plaga de termitas" class="w-12 h-12 mb-3">
+                        <h3 class="text-base font-semibold text-service-card">Plaga de termitas</h3>
+                    </div>
+                     <div class="bg-service-card p-4 rounded-xl shadow-md hover:bg-service-card-hover transition-all duration-300 text-center flex flex-col items-center justify-center aspect-square">
+                        <img src="assets/10.svg" alt="Icono Plaga de voladores" class="w-12 h-12 mb-3">
+                        <h3 class="text-base font-semibold text-service-card">Plaga de voladores</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Pestoff (Nosotros) Section -->
+        <section id="pestoff" class="py-12 md:py-20 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-pestoff-dark">Expertos en quienes puedes confiar</h2>
+                        <p class="mt-4 text-gray-600">En Pestoff, somos más que una empresa de control de plagas; somos tus socios estratégicos en la protección de tu negocio. Con años de experiencia en el mercado chileno, nos especializamos en ofrecer soluciones B2B personalizadas para empresas, industrias y locales comerciales en toda la Región Metropolitana.</p>
+                        <p class="mt-4 text-gray-600">Nuestro equipo de técnicos certificados cuenta con la autorización sanitaria correspondiente, garantizando procedimientos seguros, eficaces y discretos. Entendemos la importancia de mantener la operatividad y reputación de tu negocio, por lo que nuestros servicios se adaptan a tus horarios y necesidades específicas.</p>
+                        <a href="#contacto" class="mt-6 inline-block bg-pestoff-teal text-white font-semibold px-6 py-3 rounded-full hover:bg-pestoff-teal-dark transition duration-300">Contáctanos</a>
+                    </div>
+                    <div>
+                        <img src="assets/santiago.jpg" alt="Vista de Santiago, Chile" class="rounded-xl shadow-lg w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contacto" class="py-12 md:py-20 bg-form-section">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-pestoff-dark">Contáctanos Hoy</h2>
+                    <p class="mt-4 text-gray-700 max-w-2xl mx-auto">Completa el formulario y un especialista te contactará para una cotización B2B.</p>
+                </div>
+                
+                <div class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+                    <form id="contact-form">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label for="name" class="block text-gray-700 font-medium mb-2">Nombre Completo</label>
+                                <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 ring-pestoff-teal" required>
+                            </div>
+                            <div>
+                                <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+                                <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 ring-pestoff-teal" required>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <label for="phone" class="block text-gray-700 font-medium mb-2">Teléfono</label>
+                            <input type="tel" id="phone" name="phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 ring-pestoff-teal" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="message" class="block text-gray-700 font-medium mb-2">Mensaje</label>
+                            <textarea id="message" name="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 ring-pestoff-teal" required></textarea>
+                        </div>
+                        <div>
+                            <button type="submit" id="submit-button" class="w-full bg-pestoff-teal text-white font-bold px-8 py-3 rounded-full hover:bg-pestoff-teal-dark transition duration-300 shadow-md">
+                                Enviar Solicitud
+                            </button>
+                        </div>
+                    </form>
+                    <div id="form-feedback" class="mt-6 text-center"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-pestoff-footer text-white">
+        <div class="container mx-auto px-6 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- About -->
+                <div class="md:col-span-1">
+                     <a href="#" class="mb-4 inline-block">
+                        <img src="assets/logo-pestoff.png" alt="Logo Pestoff" class="h-14">
+                    </a>
+                    <p class="text-gray-400">Somos tu aliado en el control de plagas para empresas, ofreciendo servicios de calidad con resolución sanitaria en Santiago y toda la Región Metropolitana.</p>
+                </div>
+                <!-- Links -->
+                <div>
+                    <h4 class="font-semibold text-lg mb-4 text-pestoff-footer-link">Navegación</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#servicios" class="text-gray-400 hover:text-white">Servicios</a></li>
+                        <li><a href="#pestoff" class="text-gray-400 hover:text-white">Pestoff</a></li>
+                        <li><a href="blog.html" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="#contacto" class="text-gray-400 hover:text-white">Contacto</a></li>
+                    </ul>
+                </div>
+                <!-- Legal -->
+                <div>
+                    <h4 class="font-semibold text-lg mb-4 text-pestoff-footer-link">Legal</h4>
+                     <ul class="space-y-2">
+                        <li><a href="politica-privacidad.html" class="text-gray-400 hover:text-white">Política de Privacidad</a></li>
+                        <li><a href="terminos-condiciones.html" class="text-gray-400 hover:text-white">Términos y Condiciones</a></li>
+                    </ul>
+                </div>
+                <!-- Contact Info -->
+                 <div>
+                    <h4 class="font-semibold text-lg mb-4 text-pestoff-footer-link">Contacto</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="mailto:contacto@pestoff.cl" class="hover:text-white">Email: contacto@pestoff.cl</a></li>
+                        <li>Teléfono: +56 9 6124 8400</li>
+                        <li>Santiago, Región Metropolitana</li>
+                    </ul>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="https://www.linkedin.com/company/pestoff-control-de-plagas/" target="_blank" aria-label="LinkedIn de Pestoff">
+                            <img src="assets/logo-linkedin.png" alt="Logo de LinkedIn" class="h-8 w-8">
+                        </a>
+                        <a href="https://www.instagram.com/pestoff_chile/" target="_blank" aria-label="Instagram de Pestoff">
+                             <img src="assets/logo-instagram.png" alt="Logo de Instagram" class="h-8 w-8">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-500 text-sm">
+                <p>&copy; <span id="year"></span> Pestoff. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/56961248400?text=Hola,%20necesito%20información%20sobre%20sus%20servicios%20de%20control%20de%20plagas." class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
+        <img src="assets/whatsapp-logo.png" alt="Contactar a Pestoff por WhatsApp" class="p-1">
+    </a>
+
+    <script>
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Contact Form Submission
+        var form = document.getElementById('contact-form');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var scriptURL = 'https://script.google.com/macros/s/AKfycbzYcVRf00SLOosZKPFZM2BgJQJY3vyw3AYeqr2JSNHYN_7_JDvG33rwH8Xl2AO7wzQp9w/exec';
+            var submitButton = document.getElementById('submit-button');
+            var formFeedback = document.getElementById('form-feedback');
+            
+            submitButton.disabled = true;
+            submitButton.textContent = 'Enviando...';
+            
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(function(response) {
+                    console.log('Success!', response);
+                    formFeedback.innerHTML = '<p class="text-green-600 font-semibold">¡Gracias! Tu mensaje ha sido enviado.</p>';
+                    form.reset();
+                })
+                .catch(function(error) {
+                    console.error('Error!', error.message);
+                    formFeedback.innerHTML = '<p class="text-red-600 font-semibold">Hubo un error al enviar el formulario.</p>';
+                })
+                .finally(function() {
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Enviar Solicitud';
+                });
+        });
+    </script>
+
+</body>
+</html>
