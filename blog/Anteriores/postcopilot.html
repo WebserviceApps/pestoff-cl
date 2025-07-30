@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargando artículo... | Pestoff Chile</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="icon" href="../assets/logo-pestoff1.png" type="image/png">
+
+    <script src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@contentful/rich-text-html-renderer@latest/dist/rich-text-html-renderer.browser.min.js"></script>
+
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .post-content h2 { font-size: 1.5rem; font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        .post-content p { margin-bottom: 1rem; line-height: 1.75; }
+        .post-content ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; }
+        .post-content ol { list-style-type: decimal; margin-left: 1.5rem; margin-bottom: 1rem; }
+        .post-content a { color: #00a99d; text-decoration: underline; }
+        .bg-pestoff-teal { background-color: #00a99d; }
+        .text-pestoff-dark { color: #2c3e50; }
+        .hover\:bg-pestoff-teal-dark:hover { background-color: #008a7e; }
+        .bg-pestoff-footer { background-color: #153545; }
+        .text-pestoff-footer-link { color: #81dfd7; }
+    </style>
+</head>
+<body class="bg-white">
+
+    <header class="bg-white shadow-md sticky top-0 z-50"></header>
+
+    <main class="py-12 md:py-16">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <h1 id="post-title" class="text-3xl md:text-5xl font-bold text-pestoff-dark mb-4">Cargando...</h1>
+            <p id="post-date" class="text-gray-500 mb-8"></p>
+            <img id="post-image" src="" alt="" class="w-full h-auto rounded-lg shadow-lg mb-8 hidden">
+            <div id="post-content" class="text-gray-800 post-content"></div>
+        </div>
+    </main>
+    
+    <footer class="bg-pestoff-footer text-white"></footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const SPACE_ID = 'xmg0akvdqvvq';
+            const ACCESS_TOKEN = 'VZXkHrnxbb9KFtN9yGYUj0OvBlRecdoZJO-MSkjeN-k';
+
+            const client = window.contentful.createClient({
+                space: SPACE_ID,
+                accessToken: ACCESS_TOKEN,
+            });
+
+            const postTitle = document.getElementById('post-title');
+            const postDate = document.getElementById('post-date');
+            const postImage = document.getElementById('post-image');
+            const postContent = document.getElementById('post-content');
+
+            function getSlugFromURL() {
+                return new URLSearchParams(window.location.search).get('slug');
+            }
+
+            async function fetchAndDisplayPost() {
+                const slug = getSlugFromURL();
+                if (!slug) {
+                    postTitle.textContent = 'No se encontró el artículo';
+                    postDate.textContent = '';
+                    postContent.innerHTML = '<p>No se proporcionó un identificador de artículo válido en la URL.</p>';
+                    return;
+                }
+
+                try {
+                    const response = await client.getEntries({
+                        'content_type': 'blogPost',
+                        'fields.slug': slug,
+                        'limit': 1 
+                    });
+
+                    if (response.items.length > 0) {
+                        const post = response.items[0].fields;
+                        
+                        // ✅ CORRECCIÓN: Usamos 'titulo' en lugar de 'título'
+                        document.title = `${post.titulo} | Pestoff Chile`;
+                        postTitle.textContent = post.titulo || 'Título no disponible';
+
+                        // ✅ CORRECCIÓN: Usamos 'fechaDePublicacion' en lugar de 'fechaDePublicación'
+                        if (post.fechaDePublicacion) {
+                            postDate.textContent = new Date(post.fechaDePublicacion).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+                        }
+
+                        if (post.imagenDestacada?.fields?.file?.url) {
+                            postImage.src = `https:${post.imagenDestacada.fields.file.url}`;
+                            postImage.alt = post.titulo;
+                            postImage.classList.remove('hidden');
+                        }
+                        
+                        // ✅ CORRECCIÓN: Usamos 'contenidoPrincipal'
+                        if (post.contenidoPrincipal) {
+                            postContent.innerHTML = window.contentfulRichTextRenderer.documentToHtmlString(post.contenidoPrincipal);
+                        } else {
+                            postContent.innerHTML = '<p>El contenido de este artículo aún no está disponible.</p>';
+                        }
+
+                    } else {
+                        postTitle.textContent = 'Artículo no encontrado';
+                        postDate.textContent = '';
+                        postImage.classList.add('hidden');
+                        postContent.innerHTML = '<p>No se encontró el artículo solicitado. Por favor, verifica el enlace o vuelve al blog.</p>';
+                    }
+                } catch (error) {
+                    console.error("Error al cargar el artículo:", error);
+                    postTitle.textContent = 'Error al cargar el artículo';
+                    postImage.classList.add('hidden');
+                    postContent.innerHTML = '<p>Hubo un problema al cargar el contenido. Por favor, inténtalo de nuevo más tarde.</p>';
+                }
+            }
+
+            fetchAndDisplayPost();
+        });
+    </script>
+</body>
+</html>
