@@ -7,17 +7,18 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="../assets/logo-pestoff1.png" type="image/png">
 
     <script src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@contentful/rich-text-html-renderer@latest/dist/rich-text-html-renderer.browser.min.js"></script>
 
     <style>
         body { font-family: 'Poppins', sans-serif; }
         .post-content h2, .post-content h3 { font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.75rem; line-height: 1.3; }
-        .post-content h2 { font-size: 1.5rem; } /* h2 -> ### */
-        .post-content h3 { font-size: 1.25rem; } /* h3 -> ### */
+        .post-content h2 { font-size: 1.5rem; }
+        .post-content h3 { font-size: 1.25rem; }
         .post-content p { margin-bottom: 1.25rem; line-height: 1.75; }
         .post-content ul, .post-content ol { margin-left: 1.5rem; margin-bottom: 1.25rem; }
         .post-content ul { list-style-type: disc; }
@@ -33,7 +34,17 @@
 </head>
 <body class="bg-white">
 
-    <header class="bg-white shadow-md sticky top-0 z-50"></header>
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div><a href="../index.html"><img src="../assets/logo-pestoff1.png" alt="Logo de Pestoff Chile" class="h-12 md:h-14"></a></div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="../index.html#inicio" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Inicio</a>
+                <a href="../index.html#servicios" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Servicios</a>
+                <a href="index.html" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Blog</a>
+            </div>
+            <div><a href="../index.html#contacto" class="bg-pestoff-teal text-white font-semibold px-6 py-2 rounded-full hover:bg-pestoff-teal-dark transition duration-300 shadow-sm">Cotizar Ahora</a></div>
+        </nav>
+    </header>
 
     <main class="py-12 md:py-16">
         <div class="container mx-auto px-6 max-w-4xl">
@@ -50,23 +61,15 @@
         window.addEventListener('load', () => {
             const SPACE_ID = 'xmg0akvdqvvq';
             const ACCESS_TOKEN = 'VZXkHrnxbb9KFtN9yGYUj0OvBlRecdoZJO-MSkjeN-k';
-            const client = window.contentful.createClient({ space: SPACE_ID, accessToken: ACCESS_TOKEN });
 
-            // --- Selectores del DOM ---
+            const client = window.contentful.createClient({ space: SPACE_ID, accessToken: ACCESS_TOKEN });
             const postTitle = document.getElementById('post-title');
             const postDate = document.getElementById('post-date');
             const postImage = document.getElementById('post-image');
             const postContent = document.getElementById('post-content');
 
-            // ✅ *** RENDERIZADOR DE RICH TEXT AVANZADO ***
-            function renderRichText(richTextDocument) {
-                if (!richTextDocument || !richTextDocument.content) return '';
-                return richTextDocument.content.map(renderNode).join('');
-            }
-
             function renderNode(node) {
                 const renderContent = () => node.content ? node.content.map(renderNode).join('') : '';
-
                 switch (node.nodeType) {
                     case 'document': return renderContent();
                     case 'heading-2': return `<h2>${renderContent()}</h2>`;
@@ -78,7 +81,6 @@
                     case 'blockquote': return `<blockquote>${renderContent()}</blockquote>`;
                     case 'hr': return '<hr class="my-8">';
                     case 'hyperlink': return `<a href="${node.data.uri}" target="_blank" rel="noopener noreferrer">${renderContent()}</a>`;
-                    
                     case 'text':
                         let text = node.value.replace(/\n/g, '<br/>');
                         if (node.marks && node.marks.length > 0) {
@@ -90,13 +92,49 @@
                             });
                         }
                         return text;
-                        
                     default: return '';
                 }
             }
-            
+
+            function renderRichText(richTextDocument) {
+                if (!richTextDocument || !richTextDocument.content) return '';
+                return richTextDocument.content.map(renderNode).join('');
+            }
+
             async function fetchAndDisplayPost() {
                 const slug = new URLSearchParams(window.location.search).get('slug');
-                if (!slug) { /* ... */ return; }
+                if (!slug) {
+                    postTitle.textContent = 'Error: Artículo no especificado';
+                    return;
+                }
                 try {
-                    const response = await client
+                    const response = await client.getEntries({ 'content_type': 'blogPost', 'fields.slug': slug, limit: 1 });
+                    if (response.items.length > 0) {
+                        const post = response.items[0].fields;
+                        document.title = `${post.titulo} | Pestoff Chile`;
+                        postTitle.textContent = post.titulo;
+                        if (post.fechaDePublicacion) {
+                            postDate.textContent = new Date(post.fechaDePublicacion).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+                        }
+                        if (post.imagenDestacada?.fields?.file?.url) {
+                            postImage.src = `https:${post.imagenDestacada.fields.file.url}`;
+                            postImage.alt = post.titulo;
+                            postImage.classList.remove('hidden');
+                        }
+                        if (post.contenidoPrincipal) {
+                            postContent.innerHTML = renderRichText(post.contenidoPrincipal);
+                        }
+                    } else {
+                        postTitle.textContent = 'Artículo no encontrado';
+                    }
+                } catch (error) {
+                    console.error("Error al cargar el artículo:", error);
+                    postTitle.textContent = 'Error de Carga';
+                    postContent.innerHTML = '<p class="text-red-500">Hubo un error al conectar con el servidor de contenido.</p>';
+                }
+            }
+            fetchAndDisplayPost();
+        });
+    </script>
+</body>
+</html>
