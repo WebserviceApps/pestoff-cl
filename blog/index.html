@@ -58,15 +58,19 @@
                         return;
                     }
                     postsContainer.innerHTML = response.items.map(item => {
-                        const { titulo, slug, resumen, imagenDestacada } = item.fields;
+                        // ✅ CAMBIO: Usamos 'extracto' en lugar de 'resumen'
+                        const { titulo, slug, extracto, imagenDestacada } = item.fields;
                         const imageUrl = imagenDestacada?.fields?.file?.url ? `https:${imagenDestacada.fields.file.url}` : 'https://via.placeholder.com/400x300.png?text=Imagen';
                         const postLink = `post.html?slug=${slug}`;
+                        
                         return `
                             <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
                                 <a href="${postLink}"><img class="h-56 w-full object-cover" src="${imageUrl}" alt="${titulo || ''}"></a>
                                 <div class="p-6 flex-grow">
                                     <h2 class="font-bold text-xl text-pestoff-dark mb-2">${titulo || ''}</h2>
-                                    <p class="text-gray-700 text-base">${resumen || ''}</p>
+                                    
+                                    <p class="text-gray-700 text-base">${extracto || ''}</p>
+
                                 </div>
                                 <div class="p-6 pt-0">
                                     <a href="${postLink}" class="font-semibold text-pestoff-teal hover:underline">Leer Más &rarr;</a>
