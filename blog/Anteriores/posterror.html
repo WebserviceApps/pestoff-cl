@@ -34,15 +34,15 @@
     <header class="bg-white shadow-md sticky top-0 z-50">
         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
             <div>
-                <a href="../index.html"><img src="../assets/logo-pestoff1.png" alt="Logo de Pestoff Chile" class="h-12 md:h-14"></a>
+                <a href="../indexcarrusel.html"><img src="../assets/logo-pestoff1.png" alt="Logo de Pestoff Chile" class="h-12 md:h-14"></a>
             </div>
             <div class="hidden md:flex items-center space-x-6">
-                <a href="../index.html#inicio" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Inicio</a>
-                <a href="../index.html#servicios" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Servicios</a>
+                <a href="../indexcarrusel.html#inicio" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Inicio</a>
+                <a href="../indexcarrusel.html#servicios" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Servicios</a>
                 <a href="index.html" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Blog</a>
             </div>
             <div>
-                 <a href="../index.html#contacto" class="bg-pestoff-teal text-white font-semibold px-6 py-2 rounded-full hover:bg-pestoff-teal-dark transition duration-300 shadow-sm">Cotizar Ahora</a>
+                 <a href="../indexcarrusel.html#contacto" class="bg-pestoff-teal text-white font-semibold px-6 py-2 rounded-full hover:bg-pestoff-teal-dark transition duration-300 shadow-sm">Cotizar Ahora</a>
             </div>
         </nav>
     </header>
@@ -68,7 +68,6 @@
                 accessToken: ACCESS_TOKEN,
             });
 
-            // ... (selectores del DOM se mantienen igual) ...
             const postTitle = document.getElementById('post-title');
             const postDate = document.getElementById('post-date');
             const postImage = document.getElementById('post-image');
@@ -80,7 +79,11 @@
 
             async function fetchAndDisplayPost() {
                 const slug = getSlugFromURL();
-                if (!slug) { /* ... */ return; }
+                if (!slug) {
+                    postTitle.textContent = 'Error';
+                    postContent.innerHTML = '<p>No se ha especificado un artículo para cargar.</p>';
+                    return;
+                }
 
                 try {
                     const response = await client.getEntries({
@@ -106,21 +109,26 @@
                         }
                         
                         if (post.contenidoPrincipal) {
-                            // ✅ CORRECCIÓN FINAL: El nombre correcto es 'contentfulRichTextRenderer'
-                            postContent.innerHTML = window.contentfulRichTextRenderer.documentToHtmlString(post.contenidoPrincipal);
+                            // ✅ CORRECCIÓN FINAL Y DEFINITIVA
+                            postContent.innerHTML = window.richTextRenderer.documentToHtmlString(post.contenidoPrincipal);
                         } else {
                             postContent.innerHTML = '<p>El contenido de este artículo aún no está disponible.</p>';
                         }
 
                     } else {
-                        // ... (manejo de post no encontrado) ...
+                        postTitle.textContent = 'No Encontrado';
+                        postContent.innerHTML = '<p>El artículo que buscas no existe o no está disponible.</p>';
                     }
                 } catch (error) {
-                    // ... (manejo de error) ...
+                    console.error("Error al cargar el artículo:", error);
+                    postTitle.textContent = 'Error de Carga';
+                    postContent.innerHTML = '<p class="text-red-500">Hubo un error al conectar con el servidor de contenido.</p>';
                 }
             }
+
             fetchAndDisplayPost();
         });
     </script>
+
 </body>
 </html>
