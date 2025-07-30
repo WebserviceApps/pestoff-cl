@@ -4,28 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cargando artículo... | Pestoff Chile</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="../assets/logo-pestoff1.png" type="image/png">
+
     <script src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@contentful/rich-text-html-renderer@latest/dist/rich-text-html-renderer.browser.min.js"></script>
+
     <style>
         body { font-family: 'Poppins', sans-serif; }
-        .post-content h2 { font-size: 1.5rem; font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.5rem; }
-        .post-content p { margin-bottom: 1rem; line-height: 1.75; }
-        .post-content ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; }
-        .post-content ol { list-style-type: decimal; margin-left: 1.5rem; margin-bottom: 1rem; }
-        .post-content a { color: #00a99d; text-decoration: underline; }
+        .post-content p { margin-bottom: 1.25rem; line-height: 1.75; }
         .bg-pestoff-teal { background-color: #00a99d; }
         .text-pestoff-dark { color: #2c3e50; }
         .hover\:bg-pestoff-teal-dark:hover { background-color: #008a7e; }
         .bg-pestoff-footer { background-color: #153545; }
-        .text-pestoff-footer-link { color: #81dfd7; }
     </style>
 </head>
 <body class="bg-white">
+
     <header class="bg-white shadow-md sticky top-0 z-50">
         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
             <div><a href="../index.html"><img src="../assets/logo-pestoff1.png" alt="Logo de Pestoff Chile" class="h-12 md:h-14"></a></div>
@@ -37,6 +35,7 @@
             <div><a href="../index.html#contacto" class="bg-pestoff-teal text-white font-semibold px-6 py-2 rounded-full hover:bg-pestoff-teal-dark transition duration-300 shadow-sm">Cotizar Ahora</a></div>
         </nav>
     </header>
+
     <main class="py-12 md:py-16">
         <div class="container mx-auto px-6 max-w-4xl">
             <h1 id="post-title" class="text-3xl md:text-5xl font-bold text-pestoff-dark mb-4">Cargando...</h1>
@@ -45,7 +44,9 @@
             <div id="post-content" class="text-gray-800 post-content"></div>
         </div>
     </main>
+    
     <footer class="bg-pestoff-footer text-white"></footer>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const SPACE_ID = 'xmg0akvdqvvq';
@@ -57,6 +58,18 @@
             const postImage = document.getElementById('post-image');
             const postContent = document.getElementById('post-content');
 
+            // ✅ NUEVA FUNCIÓN PARA RENDERIZAR EL CONTENIDO
+            function renderContent(contentDocument) {
+                let html = '';
+                if (!contentDocument || !contentDocument.content) return '';
+                contentDocument.content.forEach(node => {
+                    if (node.nodeType === 'paragraph' && node.content.length > 0) {
+                        html += `<p>${node.content.map(innerNode => innerNode.value || '').join('')}</p>`;
+                    }
+                });
+                return html;
+            }
+
             async function fetchAndDisplayPost() {
                 const slug = new URLSearchParams(window.location.search).get('slug');
                 if (!slug) {
@@ -64,13 +77,12 @@
                     postContent.innerHTML = '<p>No se ha especificado un artículo para cargar.</p>';
                     return;
                 }
-
                 try {
                     const response = await client.getEntries({ 'content_type': 'blogPost', 'fields.slug': slug, limit: 1 });
                     if (response.items.length > 0) {
                         const post = response.items[0].fields;
                         document.title = `${post.titulo} | Pestoff Chile`;
-                        postTitle.textContent = post.titulo || 'Título no disponible';
+                        postTitle.textContent = post.titulo;
                         if (post.fechaDePublicacion) {
                             postDate.textContent = new Date(post.fechaDePublicacion).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
                         }
@@ -80,13 +92,13 @@
                             postImage.classList.remove('hidden');
                         }
                         if (post.contenidoPrincipal) {
-                            postContent.innerHTML = window.contentfulRichTextRenderer.documentToHtmlString(post.contenidoPrincipal);
+                            // Usamos nuestra nueva función de renderizado
+                            postContent.innerHTML = renderContent(post.contenidoPrincipal);
                         } else {
                             postContent.innerHTML = '<p>El contenido de este artículo aún no está disponible.</p>';
                         }
                     } else {
                         postTitle.textContent = 'Artículo no encontrado';
-                        postContent.innerHTML = '<p>No se encontró el artículo solicitado. Por favor, verifica el enlace.</p>';
                     }
                 } catch (error) {
                     console.error("Error al cargar el artículo:", error);
