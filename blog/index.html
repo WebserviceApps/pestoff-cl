@@ -5,16 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog | Pestoff Chile</title>
     <meta name="description" content="Artículos, guías y recursos sobre el control de plagas para empresas en Santiago y la Región Metropolitana.">
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
     <link rel="icon" href="../assets/logo-pestoff1.png" type="image/png">
-
     <script src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
-
     <style>
         body { font-family: 'Poppins', sans-serif; }
         html { scroll-behavior: smooth; }
@@ -26,111 +22,64 @@
     </style>
 </head>
 <body class="bg-gray-100">
-
     <header class="bg-white shadow-md sticky top-0 z-50">
         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <div>
-                <a href="../index.html">
-                    <img src="../assets/logo-pestoff1.png" alt="Logo de Pestoff Chile" class="h-12 md:h-14">
-                </a>
-            </div>
+            <div><a href="../index.html"><img src="../assets/logo-pestoff1.png" alt="Logo de Pestoff Chile" class="h-12 md:h-14"></a></div>
             <div class="hidden md:flex items-center space-x-6">
                 <a href="../index.html#inicio" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Inicio</a>
                 <a href="../index.html#servicios" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Servicios</a>
                 <a href="#" class="text-pestoff-teal font-semibold">Blog</a>
             </div>
-            <div class="flex items-center">
-                 <a href="../index.html#contacto" class="bg-pestoff-teal text-white font-semibold px-6 py-2 rounded-full hover:bg-pestoff-teal-dark transition duration-300 shadow-sm">
-                    Cotizar Ahora
-                </a>
-            </div>
+            <div><a href="../index.html#contacto" class="bg-pestoff-teal text-white font-semibold px-6 py-2 rounded-full hover:bg-pestoff-teal-dark transition duration-300 shadow-sm">Cotizar Ahora</a></div>
         </nav>
     </header>
-
     <main class="py-12 md:py-20">
         <div class="container mx-auto px-6">
             <div class="text-center mb-12">
                 <h1 class="text-4xl md:text-5xl font-bold text-pestoff-dark">Blog y Recursos</h1>
                 <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Consejos de expertos, guías y noticias del sector para mantener tu negocio protegido.</p>
             </div>
-            <div id="posts-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                </div>
+            <div id="posts-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         </div>
     </main>
-    
-    <footer class="bg-pestoff-footer text-white">
-        </footer>
-
-  <script>
+    <footer class="bg-pestoff-footer text-white"></footer>
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
             const SPACE_ID = 'xmg0akvdqvvq';
             const ACCESS_TOKEN = 'VZXkHrnxbb9KFtN9yGYUj0OvBlRecdoZJO-MSkjeN-k';
+            const client = window.contentful.createClient({ space: SPACE_ID, accessToken: ACCESS_TOKEN });
+            const postsContainer = document.getElementById('posts-container');
 
-            const client = window.contentful.createClient({
-                space: SPACE_ID,
-                accessToken: ACCESS_TOKEN,
-            });
-
-            const postTitle = document.getElementById('post-title');
-            const postDate = document.getElementById('post-date');
-            const postImage = document.getElementById('post-image');
-            const postContent = document.getElementById('post-content');
-
-            function getSlugFromURL() {
-                return new URLSearchParams(window.location.search).get('slug');
-            }
-
-            async function fetchAndDisplayPost() {
-                const slug = getSlugFromURL();
-                if (!slug) {
-                    postTitle.textContent = 'Error';
-                    postContent.innerHTML = '<p>No se ha especificado un artículo para cargar.</p>';
-                    return;
-                }
-
+            async function fetchAndDisplayPosts() {
                 try {
-                    const response = await client.getEntries({
-                        'content_type': 'blogPost',
-                        'fields.slug': slug,
-                        'limit': 1 
-                    });
-
-                    if (response.items.length > 0) {
-                        const post = response.items[0].fields;
-                        
-                        document.title = `${post.titulo} | Pestoff Chile`;
-                        postTitle.textContent = post.titulo || 'Título no disponible';
-
-                        if (post.fechaDePublicacion) {
-                            postDate.textContent = new Date(post.fechaDePublicacion).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-                        }
-
-                        if (post.imagenDestacada?.fields?.file?.url) {
-                            postImage.src = `https:${post.imagenDestacada.fields.file.url}`;
-                            postImage.alt = post.titulo;
-                            postImage.classList.remove('hidden');
-                        }
-                        
-                        if (post.contenidoPrincipal) {
-                            postContent.innerHTML = window.contentfulRichTextRenderer.documentToHtmlString(post.contenidoPrincipal);
-                        } else {
-                            postContent.innerHTML = '<p>El contenido de este artículo aún no está disponible.</p>';
-                        }
-
-                    } else {
-                        postTitle.textContent = 'No Encontrado';
-                        postContent.innerHTML = '<p>El artículo que buscas no existe o no está disponible.</p>';
+                    const response = await client.getEntries({ content_type: 'blogPost' });
+                    if (response.items.length === 0) {
+                        postsContainer.innerHTML = '<p class="text-center col-span-full">No hay artículos publicados.</p>';
+                        return;
                     }
+                    postsContainer.innerHTML = response.items.map(item => {
+                        const { titulo, slug, resumen, imagenDestacada } = item.fields;
+                        const imageUrl = imagenDestacada?.fields?.file?.url ? `https:${imagenDestacada.fields.file.url}` : 'https://via.placeholder.com/400x300.png?text=Imagen';
+                        const postLink = `post.html?slug=${slug}`;
+                        return `
+                            <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+                                <a href="${postLink}"><img class="h-56 w-full object-cover" src="${imageUrl}" alt="${titulo || ''}"></a>
+                                <div class="p-6 flex-grow">
+                                    <h2 class="font-bold text-xl text-pestoff-dark mb-2">${titulo || ''}</h2>
+                                    <p class="text-gray-700 text-base">${resumen || ''}</p>
+                                </div>
+                                <div class="p-6 pt-0">
+                                    <a href="${postLink}" class="font-semibold text-pestoff-teal hover:underline">Leer Más &rarr;</a>
+                                </div>
+                            </div>`;
+                    }).join('');
                 } catch (error) {
-                    console.error("Error al cargar el artículo:", error);
-                    postTitle.textContent = 'Error de Carga';
-                    postContent.innerHTML = '<p class="text-red-500">Hubo un error al conectar con el servidor de contenido.</p>';
+                    console.error('Error al cargar los artículos:', error);
+                    postsContainer.innerHTML = '<p class="text-center col-span-full text-red-500">Error al cargar los artículos.</p>';
                 }
             }
-
-            fetchAndDisplayPost();
+            fetchAndDisplayPosts();
         });
     </script>
-
 </body>
 </html>
