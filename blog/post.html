@@ -19,86 +19,64 @@
     <footer class="bg-pestoff-footer text-white"></footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        // ✅ CORRECCIÓN: Usamos el evento 'load' para asegurar que las librerías externas estén listas.
+        window.addEventListener('load', () => {
             const SPACE_ID = 'xmg0akvdqvvq';
             const ACCESS_TOKEN = 'VZXkHrnxbb9KFtN9yGYUj0OvBlRecdoZJO-MSkjeN-k';
-            const client = window.contentful.createClient({ space: SPACE_ID, accessToken: ACCESS_TOKEN });
+
+            const client = window.contentful.createClient({
+                space: SPACE_ID,
+                accessToken: ACCESS_TOKEN,
+            });
 
             const postTitle = document.getElementById('post-title');
             const postDate = document.getElementById('post-date');
             const postImage = document.getElementById('post-image');
             const postContent = document.getElementById('post-content');
 
-            // ✅ FUNCIÓN DE RENDERIZADO MEJORADA PARA MANEJAR TÍTULOS Y LISTAS
-            function renderNode(node) {
-                let textContent = '';
-                if (node.content) {
-                    textContent = node.content.map(innerNode => {
-                        if (innerNode.nodeType === 'text') {
-                            let text = innerNode.value;
-                            if (innerNode.marks && innerNode.marks.length > 0) {
-                                innerNode.marks.forEach(mark => {
-                                    if (mark.type === 'bold') text = `<strong>${text}</strong>`;
-                                    if (mark.type === 'italic') text = `<em>${text}</em>`;
-                                    if (mark.type === 'underline') text = `<u>${text}</u>`;
-                                });
-                            }
-                            return text;
-                        }
-                        return '';
-                    }).join('');
-                }
-
-                switch (node.nodeType) {
-                    case 'heading-2':
-                        return `<h2>${textContent}</h2>`;
-                    case 'heading-3':
-                        return `<h3>${textContent}</h3>`;
-                    case 'paragraph':
-                        return `<p>${textContent || '&nbsp;'}</p>`; // Añadir espacio si el párrafo está vacío
-                    case 'unordered-list':
-                        return `<ul>${node.content.map(renderNode).join('')}</ul>`;
-                    case 'ordered-list':
-                        return `<ol>${node.content.map(renderNode).join('')}</ol>`;
-                    case 'list-item':
-                        // Los list-items tienen párrafos adentro, necesitamos un manejo especial
-                        return `<li>${node.content.map(renderNode).join('')}</li>`;
-                    default:
-                        return '';
-                }
-            }
-
-            function renderRichText(richTextDocument) {
-                if (!richTextDocument || !richTextDocument.content) return '';
-                return richTextDocument.content.map(renderNode).join('');
-            }
-
             async function fetchAndDisplayPost() {
                 const slug = new URLSearchParams(window.location.search).get('slug');
-                if (!slug) { /* ... */ return; }
+                if (!slug) {
+                    postTitle.textContent = 'Error';
+                    postContent.innerHTML = '<p>No se ha especificado un artículo para cargar.</p>';
+                    return;
+                }
 
                 try {
-                    const response = await client.getEntries({ 'content_type': 'blogPost', 'fields.slug': slug, limit: 1 });
+                    const response = await client.getEntries({
+                        'content_type': 'blogPost',
+                        'fields.slug': slug,
+                        limit: 1 
+                    });
+
                     if (response.items.length > 0) {
                         const post = response.items[0].fields;
                         document.title = `${post.titulo} | Pestoff Chile`;
-                        postTitle.textContent = post.titulo;
+                        postTitle.textContent = post.titulo || 'Título no disponible';
+
                         if (post.fechaDePublicacion) {
                             postDate.textContent = new Date(post.fechaDePublicacion).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
                         }
+
                         if (post.imagenDestacada?.fields?.file?.url) {
                             postImage.src = `https:${post.imagenDestacada.fields.file.url}`;
                             postImage.alt = post.titulo;
                             postImage.classList.remove('hidden');
                         }
+                        
                         if (post.contenidoPrincipal) {
-                            postContent.innerHTML = renderRichText(post.contenidoPrincipal);
+                            postContent.innerHTML = window.contentfulRichTextRenderer.documentToHtmlString(post.contenidoPrincipal);
+                        } else {
+                            postContent.innerHTML = '<p>El contenido de este artículo aún no está disponible.</p>';
                         }
+
                     } else {
-                        // ...
+                        postTitle.textContent = 'Artículo no encontrado';
                     }
                 } catch (error) {
-                    // ...
+                    console.error("Error al cargar el artículo:", error);
+                    postTitle.textContent = 'Error de Carga';
+                    postContent.innerHTML = '<p class="text-red-500">Hubo un error al conectar con el servidor de contenido.</p>';
                 }
             }
             fetchAndDisplayPost();
