@@ -65,32 +65,26 @@
         const SPACE_ID = 'xmg0akvdqvvq';
         const ACCESS_TOKEN = 'VZXkHrnxbb9KFtN9yGYUj0OvBlRecdoZJO-MSkjeN-k'; 
 
-        const client = contentful.createClient({
-            space: SPACE_ID,
-            accessToken: ACCESS_TOKEN,
-        });
-
+        const client = contentful.createClient({ space: SPACE_ID, accessToken: ACCESS_TOKEN });
         const postsContainer = document.getElementById('posts-container');
 
         async function fetchAndDisplayPosts() {
             try {
                 const response = await client.getEntries({ content_type: 'blogPost' });
-
                 if (response.items.length === 0) {
                     postsContainer.innerHTML = '<p class="text-center col-span-full">Conexión exitosa. No hay artículos publicados.</p>';
                     return;
                 }
-
                 postsContainer.innerHTML = response.items.map(item => {
                     const { titulo, slug, resumen, imagenDestacada } = item.fields;
                     const imageUrl = imagenDestacada?.fields?.file?.url ? `https:${imagenDestacada.fields.file.url}` : 'https://via.placeholder.com/400x300.png?text=Imagen';
-                    const postLink = `${slug}.html`; 
+                    
+                    // ✅ ENLACE ACTUALIZADO
+                    const postLink = `post.html?slug=${slug}`; 
 
                     return `
                         <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
-                            <a href="${postLink}">
-                                <img class="h-56 w-full object-cover" src="${imageUrl}" alt="${titulo}">
-                            </a>
+                            <a href="${postLink}"><img class="h-56 w-full object-cover" src="${imageUrl}" alt="${titulo}"></a>
                             <div class="p-6 flex-grow">
                                 <h2 class="font-bold text-xl text-pestoff-dark mb-2">${titulo}</h2>
                                 <p class="text-gray-700 text-base">${resumen}</p>
@@ -101,13 +95,11 @@
                         </div>
                     `;
                 }).join('');
-
             } catch (error) {
                 console.error('Error al obtener los datos de Contentful:', error);
-                postsContainer.innerHTML = '<p class="text-center col-span-full text-red-500">Error al cargar los artículos. Por favor, verifica las credenciales de la API.</p>';
+                postsContainer.innerHTML = '<p class="text-center col-span-full text-red-500">Error al cargar los artículos.</p>';
             }
         }
-
         fetchAndDisplayPosts();
     </script>
 
