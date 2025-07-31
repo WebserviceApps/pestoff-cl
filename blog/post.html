@@ -12,6 +12,7 @@
     <link rel="icon" href="../assets/logo-pestoff1.png" type="image/png">
 
     <script src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@contentful/rich-text-html-renderer@latest/dist/rich-text-html-renderer.browser.min.js"></script>
 
     <style>
         body { font-family: 'Poppins', sans-serif; }
@@ -67,39 +68,6 @@
             const postImage = document.getElementById('post-image');
             const postContent = document.getElementById('post-content');
 
-            function renderNode(node) {
-                const renderContent = () => node.content ? node.content.map(renderNode).join('') : '';
-                switch (node.nodeType) {
-                    case 'document': return renderContent();
-                    case 'heading-2': return `<h2>${renderContent()}</h2>`;
-                    case 'heading-3': return `<h3>${renderContent()}</h3>`;
-                    case 'paragraph': return `<p>${renderContent() || '&nbsp;'}</p>`;
-                    case 'unordered-list': return `<ul>${renderContent()}</ul>`;
-                    case 'ordered-list': return `<ol>${renderContent()}</ol>`;
-                    case 'list-item': return `<li>${renderContent()}</li>`;
-                    case 'blockquote': return `<blockquote>${renderContent()}</blockquote>`;
-                    case 'hr': return '<hr class="my-8">';
-                    case 'hyperlink': return `<a href="${node.data.uri}" target="_blank" rel="noopener noreferrer">${renderContent()}</a>`;
-                    case 'text':
-                        let text = node.value.replace(/\n/g, '<br/>');
-                        if (node.marks && node.marks.length > 0) {
-                            node.marks.forEach(mark => {
-                                if (mark.type === 'bold') text = `<strong>${text}</strong>`;
-                                if (mark.type === 'italic') text = `<em>${text}</em>`;
-                                if (mark.type === 'underline') text = `<u>${text}</u>`;
-                                if (mark.type === 'code') text = `<code>${text}</code>`;
-                            });
-                        }
-                        return text;
-                    default: return '';
-                }
-            }
-
-            function renderRichText(richTextDocument) {
-                if (!richTextDocument || !richTextDocument.content) return '';
-                return richTextDocument.content.map(renderNode).join('');
-            }
-
             async function fetchAndDisplayPost() {
                 const slug = new URLSearchParams(window.location.search).get('slug');
                 if (!slug) {
@@ -121,7 +89,8 @@
                             postImage.classList.remove('hidden');
                         }
                         if (post.contenidoPrincipal) {
-                            postContent.innerHTML = renderRichText(post.contenidoPrincipal);
+                            // ✅ CORRECCIÓN FINAL: Se usa la librería correcta.
+                            postContent.innerHTML = window.contentfulRichTextRenderer.documentToHtmlString(post.contenidoPrincipal);
                         }
                     } else {
                         postTitle.textContent = 'Artículo no encontrado';
