@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://pestoff.cl/sitemap.xml
+Sitemap: https://pestoff.netlify.app//sitemap.xml
