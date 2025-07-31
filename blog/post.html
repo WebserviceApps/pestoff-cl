@@ -89,7 +89,7 @@
                             postImage.classList.remove('hidden');
                         }
                         if (post.contenidoPrincipal) {
-                            // ✅ CORRECCIÓN FINAL: Se usa la librería correcta.
+                            // ✅ CORRECCIÓN FINAL: Se usa la librería directamente del objeto window
                             postContent.innerHTML = window.contentfulRichTextRenderer.documentToHtmlString(post.contenidoPrincipal);
                         }
                     } else {
