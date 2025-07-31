@@ -15,9 +15,10 @@
 
     <style>
         body { font-family: 'Poppins', sans-serif; }
-        .post-content h2, .post-content h3 { font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.75rem; line-height: 1.3; }
+        .post-content h2, .post-content h3, .post-content h4 { font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.75rem; line-height: 1.3; }
         .post-content h2 { font-size: 1.5rem; }
         .post-content h3 { font-size: 1.25rem; }
+        .post-content h4 { font-size: 1.1rem; }
         .post-content p { margin-bottom: 1.25rem; line-height: 1.75; }
         .post-content ul, .post-content ol { margin-left: 1.5rem; margin-bottom: 1.25rem; }
         .post-content ul { list-style-type: disc; }
@@ -25,6 +26,7 @@
         .post-content li { margin-bottom: 0.5rem; }
         .post-content a { color: #00a99d; text-decoration: underline; }
         .post-content blockquote { border-left: 4px solid #a3e2e0; padding-left: 1rem; margin: 1.5rem 0; font-style: italic; }
+        .post-content img { margin-top: 1.5rem; margin-bottom: 1.5rem; border-radius: 0.5rem; }
         .bg-pestoff-teal { background-color: #00a99d; }
         .text-pestoff-dark { color: #2c3e50; }
         .hover\:bg-pestoff-teal-dark:hover { background-color: #008a7e; }
@@ -67,14 +69,20 @@
             const postImage = document.getElementById('post-image');
             const postContent = document.getElementById('post-content');
 
-            // ✅ *** NUEVO RENDERIZADOR INTERNO Y ROBUSTO ***
-            function renderRichText(richTextDocument) {
-                if (!richTextDocument || !richTextDocument.content) return '';
-                return richTextDocument.content.map(renderNode).join('');
+            // ✅ *** RENDERIZADOR AVANZADO Y COMPLETO ***
+            function renderRichText(richTextDocument, links) {
+                if (!richTextDocument) return '';
+                const assetMap = new Map();
+                if (links && links.assets && links.assets.block) {
+                    for (const asset of links.assets.block) {
+                        assetMap.set(asset.sys.id, asset);
+                    }
+                }
+                return richTextDocument.content.map(node => renderNode(node, assetMap)).join('');
             }
 
-            function renderNode(node) {
-                const renderContent = () => node.content ? node.content.map(renderNode).join('') : '';
+            function renderNode(node, assetMap) {
+                const renderContent = () => node.content ? node.content.map(innerNode => renderNode(innerNode, assetMap)).join('') : '';
 
                 switch (node.nodeType) {
                     case 'document': return renderContent();
@@ -88,6 +96,14 @@
                     case 'hr': return '<hr class="my-8">';
                     case 'hyperlink': return `<a href="${node.data.uri}" target="_blank" rel="noopener noreferrer">${renderContent()}</a>`;
                     
+                    // ✅ AÑADIDO: Soporte para imágenes incrustadas en el texto
+                    case 'embedded-asset-block':
+                        const asset = assetMap.get(node.data.target.sys.id);
+                        if (asset) {
+                            return `<img src="https:${asset.fields.file.url}" alt="${asset.fields.description || ''}" />`;
+                        }
+                        return '';
+
                     case 'text':
                         let text = node.value.replace(/\n/g, '<br/>');
                         if (node.marks && node.marks.length > 0) {
@@ -106,26 +122,27 @@
 
             async function fetchAndDisplayPost() {
                 const slug = new URLSearchParams(window.location.search).get('slug');
-                if (!slug) {
-                    postTitle.textContent = 'Error: Artículo no especificado';
-                    return;
-                }
+                if (!slug) { return; }
+
                 try {
                     const response = await client.getEntries({ 'content_type': 'blogPost', 'fields.slug': slug, limit: 1 });
                     if (response.items.length > 0) {
-                        const post = response.items[0].fields;
-                        document.title = `${post.titulo} | Pestoff Chile`;
-                        postTitle.textContent = post.titulo;
-                        if (post.fechaDePublicacion) {
-                            postDate.textContent = new Date(post.fechaDePublicacion).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+                        const post = response.items[0];
+                        const fields = post.fields;
+
+                        document.title = `${fields.titulo} | Pestoff Chile`;
+                        postTitle.textContent = fields.titulo;
+                        
+                        if (fields.fechaDePublicacion) {
+                            postDate.textContent = new Date(fields.fechaDePublicacion).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
                         }
-                        if (post.imagenDestacada?.fields?.file?.url) {
-                            postImage.src = `https:${post.imagenDestacada.fields.file.url}`;
-                            postImage.alt = post.titulo;
+                        if (fields.imagenDestacada?.fields?.file?.url) {
+                            postImage.src = `https:${fields.imagenDestacada.fields.file.url}`;
+                            postImage.alt = fields.titulo;
                             postImage.classList.remove('hidden');
                         }
-                        if (post.contenidoPrincipal) {
-                            postContent.innerHTML = renderRichText(post.contenidoPrincipal);
+                        if (fields.contenidoPrincipal) {
+                            postContent.innerHTML = renderRichText(fields.contenidoPrincipal, post.includes);
                         }
                     } else {
                         postTitle.textContent = 'Artículo no encontrado';
