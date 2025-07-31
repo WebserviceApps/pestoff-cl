@@ -68,19 +68,15 @@
             const postImage = document.getElementById('post-image');
             const postContent = document.getElementById('post-content');
 
-            function renderRichText(richTextDocument, links) {
-                if (!richTextDocument) return '';
-                const assetMap = new Map();
-                if (links && links.assets && links.assets.block) {
-                    for (const asset of links.assets.block) {
-                        assetMap.set(asset.sys.id, asset);
-                    }
-                }
-                return richTextDocument.content.map(node => renderNode(node, assetMap)).join('');
+            // ✅ *** RENDERIZADOR COMPLETO Y DEFINITIVO ***
+            function renderRichText(richTextDocument) {
+                if (!richTextDocument || !richTextDocument.content) return '';
+                return richTextDocument.content.map(renderNode).join('');
             }
 
-            function renderNode(node, assetMap) {
-                const renderContent = () => node.content ? node.content.map(innerNode => renderNode(innerNode, assetMap)).join('') : '';
+            function renderNode(node) {
+                const renderContent = () => (node.content || []).map(renderNode).join('');
+
                 switch (node.nodeType) {
                     case 'document': return renderContent();
                     case 'heading-2': return `<h2>${renderContent()}</h2>`;
@@ -89,15 +85,10 @@
                     case 'unordered-list': return `<ul>${renderContent()}</ul>`;
                     case 'ordered-list': return `<ol>${renderContent()}</ol>`;
                     case 'list-item': return `<li>${renderContent()}</li>`;
-                    case 'blockquote': return `<blockquote>${renderContent()}</blockquote>`;
+                    case 'blockquote': return `<blockquote><p>${renderContent()}</p></blockquote>`;
                     case 'hr': return '<hr class="my-8">';
                     case 'hyperlink': return `<a href="${node.data.uri}" target="_blank" rel="noopener noreferrer">${renderContent()}</a>`;
-                    case 'embedded-asset-block':
-                        const asset = assetMap.get(node.data.target.sys.id);
-                        if (asset) {
-                            return `<img src="https:${asset.fields.file.url}" alt="${asset.fields.description || ''}" class="my-6 rounded-lg shadow-md" />`;
-                        }
-                        return '';
+                    
                     case 'text':
                         let text = node.value.replace(/\n/g, '<br/>');
                         if (node.marks && node.marks.length > 0) {
@@ -109,20 +100,26 @@
                             });
                         }
                         return text;
-                    default: return '';
+                        
+                    default: 
+                        console.warn('Unsupported node type:', node.nodeType);
+                        return '';
                 }
             }
 
             async function fetchAndDisplayPost() {
                 const slug = new URLSearchParams(window.location.search).get('slug');
                 if (!slug) { return; }
+
                 try {
                     const response = await client.getEntries({ 'content_type': 'blogPost', 'fields.slug': slug, limit: 1 });
                     if (response.items.length > 0) {
-                        const post = response.items[0]; // Usamos el item completo
+                        const post = response.items[0];
                         const fields = post.fields;
+
                         document.title = `${fields.titulo} | Pestoff Chile`;
                         postTitle.textContent = fields.titulo;
+                        
                         if (fields.fechaDePublicacion) {
                             postDate.textContent = new Date(fields.fechaDePublicacion).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
                         }
@@ -132,8 +129,7 @@
                             postImage.classList.remove('hidden');
                         }
                         if (fields.contenidoPrincipal) {
-                            // ✅ CORRECCIÓN FINAL Y DEFINITIVA
-                            postContent.innerHTML = renderRichText(fields.contenidoPrincipal, response.includes);
+                            postContent.innerHTML = renderRichText(fields.contenidoPrincipal);
                         }
                     } else {
                         postTitle.textContent = 'Artículo no encontrado';
