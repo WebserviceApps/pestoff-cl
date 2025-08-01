@@ -345,31 +345,53 @@
         // Set current year in footer
         document.getElementById('year').textContent = new Date().getFullYear();
 
-        // Contact Form Submission
-        var form = document.getElementById('contact-form');
-        form.addEventListener('submit', function(e) {
+      // Contact Form Submission (ACTUALIZADO PARA MAKE.COM)
+        const form = document.getElementById('contact-form');
+        form.addEventListener('submit', async function(e) {
             e.preventDefault();
-            var scriptURL = 'https://script.google.com/macros/s/AKfycbzYcVRf00SLOosZKPFZM2BgJQJY3vyw3AYeqr2JSNHYN_7_JDvG33rwH8Xl2AO7wzQp9w/exec';
-            var submitButton = document.getElementById('submit-button');
-            var formFeedback = document.getElementById('form-feedback');
+            
+            const webhookURL = 'https://hook.us2.make.com/zw46kmjmfx9ak4tp61zj3r8kncdn7hfl';
+            const submitButton = document.getElementById('submit-button');
+            const formFeedback = document.getElementById('form-feedback');
             
             submitButton.disabled = true;
             submitButton.textContent = 'Enviando...';
             
-            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-                .then(function(response) {
+            // Creamos un objeto con los datos del formulario
+            const formData = new FormData(form);
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                message: formData.get('message')
+            };
+
+            try {
+                // Hacemos la petición POST al webhook de Make.com
+                const response = await fetch(webhookURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
                     console.log('Success!', response);
                     formFeedback.innerHTML = '<p class="text-green-600 font-semibold">¡Gracias! Tu mensaje ha sido enviado.</p>';
                     form.reset();
-                })
-                .catch(function(error) {
-                    console.error('Error!', error.message);
-                    formFeedback.innerHTML = '<p class="text-red-600 font-semibold">Hubo un error al enviar el formulario.</p>';
-                })
-                .finally(function() {
-                    submitButton.disabled = false;
-                    submitButton.textContent = 'Enviar Solicitud';
-                });
+                } else {
+                    throw new Error(`Server responded with ${response.status}`);
+                }
+
+            } catch (error) {
+                console.error('Error!', error.message);
+                formFeedback.innerHTML = '<p class="text-red-600 font-semibold">Hubo un error al enviar el formulario.</p>';
+            
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Enviar Solicitud';
+            }
         });
     </script>
 
