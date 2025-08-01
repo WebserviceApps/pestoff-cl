@@ -36,25 +36,35 @@
 <body class="bg-gray-100">
 
     <!-- Header -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
+   <header class="bg-white shadow-md sticky top-0 z-50">
         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
             <div>
-                <a href="index.html">
+                <a href="#" class="flex items-center gap-4">
                     <img src="assets/logo-pestoff1.png" alt="Logo de Pestoff Chile" class="h-12 md:h-14">
+                    <img src="assets/logo-pestoff2.png" alt="Logo Adicional" class="h-12 md:h-14">
                 </a>
             </div>
             <div class="hidden md:flex items-center space-x-6">
-                <a href="index.html#inicio" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Inicio</a>
-                <a href="index.html#servicios" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Servicios</a>
-                <a href="index.html#pestoff" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Pestoff</a>
-                <a href="blog.html" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Blog</a>
+                <a href="#inicio" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Inicio</a>
+                <a href="#servicios" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Servicios</a>
+                <a href="#pestoff" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Pestoff</a>
+                <a href="blog/index.html" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Blog</a>
             </div>
             <div class="flex items-center">
-                 <a href="index.html#contacto" class="bg-pestoff-teal text-white font-semibold px-6 py-2 rounded-full hover:bg-pestoff-teal-dark transition duration-300 shadow-sm">
+                 <a href="#contacto" class="bg-pestoff-teal text-white font-semibold px-6 py-2 rounded-full hover:bg-pestoff-teal-dark transition duration-300 shadow-sm">
                     Cotizar Ahora
                 </a>
+                <button id="mobile-menu-button" class="md:hidden ml-4 text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
             </div>
         </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white">
+            <a href="#inicio" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Inicio</a>
+            <a href="#servicios" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Servicios</a>
+            <a href="#pestoff" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Pestoff</a>
+            <a href="blog/index.html" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Blog</a>
+        </div>
     </header>
 
     <!-- Main Content -->
