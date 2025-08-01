@@ -22,36 +22,44 @@
     </style>
 </head>
 <body class="bg-gray-100">
-   <header class="bg-white shadow-md sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <div>
-                <a href="#" class="flex items-center gap-4">
-                    <img src="../assets/logo-pestoff1.png" alt="Logo de Pestoff Chile" class="h-12 md:h-14">
-                    <img src="../assets/logo-pestoff2.png" alt="Logo Adicional" class="h-12 md:h-14">
-                </a>
-            </div>
-            <div class="hidden md:flex items-center space-x-6">
-                <a href="#inicio" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Inicio</a>
-                <a href="#servicios" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Servicios</a>
-                <a href="#pestoff" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Pestoff</a>
-                <a href="blog/index.html" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Blog</a>
-            </div>
-            <div class="flex items-center">
-                 <a href="#contacto" class="bg-pestoff-teal text-white font-semibold px-6 py-2 rounded-full hover:bg-pestoff-teal-dark transition duration-300 shadow-sm">
-                    Cotizar Ahora
-                </a>
-                <button id="mobile-menu-button" class="md:hidden ml-4 text-gray-600">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                </button>
-            </div>
-        </nav>
-        <div id="mobile-menu" class="hidden md:hidden bg-white">
-            <a href="#inicio" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Inicio</a>
-            <a href="#servicios" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Servicios</a>
-            <a href="#pestoff" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Pestoff</a>
-            <a href="blog/index.html" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Blog</a>
+    <header class="bg-white shadow-md sticky top-0 z-50">
+    <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+        <div>
+            <a href="../index.html" class="flex items-center gap-4">
+                <img src="../assets/logo-pestoff1.png" alt="Logo de Pestoff Chile" class="h-12 md:h-14">
+                <img src="../assets/logo-pestoff2.png" alt="Logo Adicional" class="h-12 md:h-14">
+            </a>
         </div>
-    </header>
+        <div class="hidden md:flex items-center space-x-6">
+            <a href="../index.html#inicio" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Inicio</a>
+            <a href="../index.html#servicios" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Servicios</a>
+            <a href="../index.html#pestoff" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Pestoff</a>
+            <a href="../blog/index.html" class="text-gray-600 hover:text-pestoff-teal transition duration-300">Blog</a>
+        </div>
+        <div class="flex items-center">
+             <a href="../index.html#contacto" class="bg-pestoff-teal text-white font-semibold px-6 py-2 rounded-full hover:bg-pestoff-teal-dark transition duration-300 shadow-sm whitespace-nowrap">
+                Cotizar Ahora
+            </a>
+            <button id="mobile-menu-button" class="md:hidden ml-4 text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+    </nav>
+    <div id="mobile-menu" class="hidden md:hidden bg-white">
+        <a href="../index.html#inicio" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Inicio</a>
+        <a href="../index.html#servicios" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Servicios</a>
+        <a href="../index.html#pestoff" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Pestoff</a>
+        <a href="../blog/index.html" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Blog</a>
+    </div>
+</header>
+    </nav>
+    <div id="mobile-menu" class="hidden md:hidden bg-white">
+        <a href="index.html#inicio" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Inicio</a>
+        <a href="index.html#servicios" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Servicios</a>
+        <a href="index.html#pestoff" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Pestoff</a>
+        <a href="blog/index.html" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Blog</a>
+    </div>
+</header>
     <main class="py-12 md:py-20">
         <div class="container mx-auto px-6">
             <div class="text-center mb-12">
@@ -64,6 +72,7 @@
     <footer class="bg-pestoff-footer text-white"></footer>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Lógica de Contentful
             const SPACE_ID = 'xmg0akvdqvvq';
             const ACCESS_TOKEN = 'VZXkHrnxbb9KFtN9yGYUj0OvBlRecdoZJO-MSkjeN-k';
             const client = window.contentful.createClient({ space: SPACE_ID, accessToken: ACCESS_TOKEN });
@@ -72,36 +81,40 @@
             async function fetchAndDisplayPosts() {
                 try {
                     const response = await client.getEntries({ content_type: 'blogPost' });
-                    if (response.items.length === 0) {
+                    if (response.items.length > 0) {
+                        postsContainer.innerHTML = response.items.map(item => {
+                            const { titulo, slug, extracto, imagenDestacada } = item.fields;
+                            const imageUrl = imagenDestacada?.fields?.file?.url ? `https:${imagenDestacada.fields.file.url}` : 'https://via.placeholder.com/400x300.png?text=Imagen';
+                            const postLink = `post.html?slug=${slug}`;
+                            return `
+                                <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+                                    <a href="${postLink}"><img class="h-56 w-full object-cover" src="${imageUrl}" alt="${titulo || ''}"></a>
+                                    <div class="p-6 flex-grow">
+                                        <h2 class="font-bold text-xl text-pestoff-dark mb-2">${titulo || ''}</h2>
+                                        <p class="text-gray-700 text-base">${extracto || ''}</p>
+                                    </div>
+                                    <div class="p-6 pt-0">
+                                        <a href="${postLink}" class="font-semibold text-pestoff-teal hover:underline">Leer Más &rarr;</a>
+                                    </div>
+                                </div>`;
+                        }).join('');
+                    } else {
                         postsContainer.innerHTML = '<p class="text-center col-span-full">No hay artículos publicados.</p>';
-                        return;
                     }
-                    postsContainer.innerHTML = response.items.map(item => {
-                        // ✅ CAMBIO: Usamos 'extracto' en lugar de 'resumen'
-                        const { titulo, slug, extracto, imagenDestacada } = item.fields;
-                        const imageUrl = imagenDestacada?.fields?.file?.url ? `https:${imagenDestacada.fields.file.url}` : 'https://via.placeholder.com/400x300.png?text=Imagen';
-                        const postLink = `post.html?slug=${slug}`;
-                        
-                        return `
-                            <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
-                                <a href="${postLink}"><img class="h-56 w-full object-cover" src="${imageUrl}" alt="${titulo || ''}"></a>
-                                <div class="p-6 flex-grow">
-                                    <h2 class="font-bold text-xl text-pestoff-dark mb-2">${titulo || ''}</h2>
-                                    
-                                    <p class="text-gray-700 text-base">${extracto || ''}</p>
-
-                                </div>
-                                <div class="p-6 pt-0">
-                                    <a href="${postLink}" class="font-semibold text-pestoff-teal hover:underline">Leer Más &rarr;</a>
-                                </div>
-                            </div>`;
-                    }).join('');
                 } catch (error) {
                     console.error('Error al cargar los artículos:', error);
                     postsContainer.innerHTML = '<p class="text-center col-span-full text-red-500">Error al cargar los artículos.</p>';
                 }
             }
             fetchAndDisplayPosts();
+
+            // Lógica para el Menú Móvil
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', function() {
+                    document.getElementById('mobile-menu').classList.toggle('hidden');
+                });
+            }
         });
     </script>
 </body>
