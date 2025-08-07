@@ -7,15 +7,16 @@
 
 <url>
   <loc>https://pestoff.cl/index.html</loc>
-  <lastmod>2025-07-31T12:00:00+00:00</lastmod>
+  <lastmod>2025-08-07T12:00:00+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://pestoff.cl/blog/index.html</loc>
-  <lastmod>2025-07-31T12:00:00+00:00</lastmod>
+  <lastmod>2025-08-07T12:00:00+00:00</lastmod>
   <priority>0.90</priority>
 </url>
 
+<!-- Servicios -->
 <url>
   <loc>https://pestoff.cl/servicio-control-palomas.html</loc>
   <lastmod>2025-07-31T12:00:00+00:00</lastmod>
@@ -27,7 +28,7 @@
   <priority>0.85</priority>
 </url>
 <url>
-  <loc>https://pestoff.cl/servicio-desinsectacion.html</loc>
+  <loc>https://pestoff.cl/servicio-fumigacion.html</loc>
   <lastmod>2025-07-31T12:00:00+00:00</lastmod>
   <priority>0.85</priority>
 </url>
@@ -57,22 +58,29 @@
   <priority>0.85</priority>
 </url>
 <url>
-  <loc>https://pestoff.cl/servicio-plaga-de-termitas.html</loc>
+  <loc>https://pestoff.cl/servicio-plaga-termitas.html</loc>
   <lastmod>2025-07-31T12:00:00+00:00</lastmod>
   <priority>0.85</priority>
 </url>
 <url>
-  <loc>https://pestoff.cl/servicio-plaga-de-voladores.html</loc>
+  <loc>https://pestoff.cl/servicio-plaga-voladores.html</loc>
   <lastmod>2025-07-31T12:00:00+00:00</lastmod>
   <priority>0.85</priority>
 </url>
 
+<!-- Artículos del Blog -->
 <url>
   <loc>https://pestoff.cl/blog/post.html?slug=manejo-integrado-de-plagas-para-empresas-e-industrias-en-santiago</loc>
   <lastmod>2025-07-31T12:00:00+00:00</lastmod>
   <priority>0.80</priority>
 </url>
+<url>
+  <loc>https://pestoff.cl/blog/post.html?slug=como-eliminar-chinche-del-arce-santiago</loc>
+  <lastmod>2025-08-07T12:00:00+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
 
+<!-- Páginas Legales -->
 <url>
   <loc>https://pestoff.cl/politica-privacidad.html</loc>
   <lastmod>2025-07-13T21:55:00+00:00</lastmod>
