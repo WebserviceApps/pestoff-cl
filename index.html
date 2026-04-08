@@ -74,12 +74,19 @@
         }
 
         /* Animación para el carrusel de clientes */
+        /* Animación para el carrusel de clientes (Copia y reemplaza este bloque) */
         @keyframes scroll {
             0% { transform: translateX(0); }
             100% { transform: translateX(-100%); }
         }
         .animate-scroll {
+            display: flex;
+            white-space: nowrap;
+            flex-shrink: 0; /* IMPORTANTE: evita la superposición */
             animation: scroll 40s linear infinite;
+        }
+        .animate-scroll:hover {
+            animation-play-state: paused;
         }
     </style>
 </head>
@@ -206,48 +213,51 @@
         </section>
 
         <!-- Clients Section -->
+        <!-- SECCIÓN CLIENTES (Copia y reemplaza todo este bloque) -->
         <section id="clientes" class="py-12 bg-service-card overflow-hidden">
-            <div class="container mx-auto">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-bold text-pestoff-dark">Confían en Nosotros</h2>
+            <div class="container mx-auto mb-6">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold text-pestoff-dark uppercase tracking-wide">Confían en Nosotros</h2>
                 </div>
-                <div class="w-full inline-flex flex-nowrap">
-                    <div class="flex items-center justify-center md:justify-start [&_p]:mx-8 animate-scroll">
-                        <p class="text-service-card font-semibold">AGENCIA DE ADUANAS BROWNE</p>
-                        <p class="text-service-card font-semibold">CARNESUR</p>
-                        <p class="text-service-card font-semibold">DISTRIBUIDORA DADAPAPADIN</p>
-                        <p class="text-service-card font-semibold">EXPLORATION DRILL MASTERS</p>
-                        <p class="text-service-card font-semibold">FOCUS TRAINING GIMNASIO</p>
-                        <p class="text-service-card font-semibold">GLOBAL COURIER</p>
-                        <p class="text-service-card font-semibold">IMAHE</p>
-                        <p class="text-service-card font-semibold">ITA</p>
-                        <p class="text-service-card font-semibold">LANCENTERCHILE</p>
-                        <p class="text-service-card font-semibold">MACPHARMA FARMACIAS</p>
-                        <p class="text-service-card font-semibold">MARVAL</p>
-                        <p class="text-service-card font-semibold">MENTALIDAD WEB</p>
-                        <p class="text-service-card font-semibold">PROKOATING</p>
-                        <p class="text-service-card font-semibold">SOLUCORP</p>
-                        <p class="text-service-card font-semibold">TECHFOODS</p>
-                        <p class="text-service-card font-semibold">UNIVERSIDAD CATÓLICA</p>
-                    </div>
-                    <div class="flex items-center justify-center md:justify-start [&_p]:mx-8 animate-scroll" aria-hidden="true">
-                        <p class="text-service-card font-semibold">AGENCIA DE ADUANAS BROWNE</p>
-                        <p class="text-service-card font-semibold">CARNESUR</p>
-                        <p class="text-service-card font-semibold">DISTRIBUIDORA DADAPAPADIN</p>
-                        <p class="text-service-card font-semibold">EXPLORATION DRILL MASTERS</p>
-                        <p class="text-service-card font-semibold">FOCUS TRAINING GIMNASIO</p>
-                        <p class="text-service-card font-semibold">GLOBAL COURIER</p>
-                        <p class="text-service-card font-semibold">IMAHE</p>
-                        <p class="text-service-card font-semibold">ITA</p>
-                        <p class="text-service-card font-semibold">LANCENTERCHILE</p>
-                        <p class="text-service-card font-semibold">MACPHARMA FARMACIAS</p>
-                        <p class="text-service-card font-semibold">MARVAL</p>
-                        <p class="text-service-card font-semibold">MENTALIDAD WEB</p>
-                        <p class="text-service-card font-semibold">PROKOATING</p>
-                        <p class="text-service-card font-semibold">SOLUCORP</p>
-                        <p class="text-service-card font-semibold">TECHFOODS</p>
-                        <p class="text-service-card font-semibold">UNIVERSIDAD CATÓLICA</p>
-                    </div>
+            </div>
+            <div class="w-full flex overflow-hidden">
+                <!-- Bloque 1 -->
+                <div class="animate-scroll flex items-center">
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">AGENCIA DE ADUANAS BROWNE</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">CARNESUR</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">DISTRIBUIDORA DADAPAPADIN</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">EXPLORATION DRILL MASTERS</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">FOCUS TRAINING GIMNASIO</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">GLOBAL COURIER</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">IMAHE</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">ITA</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">LANCENTERCHILE</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">MACPHARMA FARMACIAS</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">MARVAL</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">MENTALIDAD WEB</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">PROKOATING</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">SOLUCORP</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">TECHFOODS</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">UNIVERSIDAD CATÓLICA</p>
+                </div>
+                <!-- Bloque 2 (Espejo idéntico) -->
+                <div class="animate-scroll flex items-center">
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">AGENCIA DE ADUANAS BROWNE</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">CARNESUR</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">DISTRIBUIDORA DADAPAPADIN</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">EXPLORATION DRILL MASTERS</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">FOCUS TRAINING GIMNASIO</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">GLOBAL COURIER</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">IMAHE</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">ITA</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">LANCENTERCHILE</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">MACPHARMA FARMACIAS</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">MARVAL</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">MENTALIDAD WEB</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">PROKOATING</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">SOLUCORP</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">TECHFOODS</p>
+                    <p class="mx-10 text-service-card font-semibold uppercase tracking-wider">UNIVERSIDAD CATÓLICA</p>
                 </div>
             </div>
         </section>
